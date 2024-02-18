@@ -1,0 +1,43 @@
+spring:
+  profiles:
+    default: "dev"
+  messages:
+    basename: lang/messages
+  application:
+    name: user
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI}
+      # uri: mongodb://localhost:27017/userDB
+  cloud:
+    bootstrap:
+      enabled: true
+  graphql:
+    graphiql:
+      enabled: true
+server:
+  compression:
+    enabled: true
+    mime-types:
+      - text/html
+      - text/xml
+      - text/plain
+      - text/css
+      - text/javascript/
+      - application/javascript
+      - application/json
+      - image/svg+xml
+      - application/x-font-ttf
+    min-response-size: 2048
+  port: 5100
+spring-doc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761}
+      # defaultZone: http://localhost:8761

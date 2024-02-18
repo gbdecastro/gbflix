@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: USER
+          uri: lb://USER
+          predicates:
+            - Path=/graphql/**
+    discovery:
+      locator:
+        enabled: true
+        lower-case-service-id: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}
+          jwt-set-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}/protocol/openid-connect/certs
+server:
+  port: 5000
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+keycloak-client:
+  server-url: http://172.31.211.174:8080
+  realm: netflix
