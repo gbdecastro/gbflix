@@ -9,8 +9,10 @@ import org.mapstruct.MappingTarget;
 public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "roles", ignore = true)
     UserEntity toEntity(UserInput input);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "roles", ignore = true)
     UserEntity update(@MappingTarget UserEntity user, UserInput userUpdate);
 }

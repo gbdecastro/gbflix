@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -24,8 +25,11 @@ public class UserEntity {
 
     @Field
     private String name;
+
     @Field
     private String email;
+
     @Field
-    private Set<RolesEnum> roles;
+    @Builder.Default
+    private Set<RolesEnum> roles = new HashSet<>();
 }

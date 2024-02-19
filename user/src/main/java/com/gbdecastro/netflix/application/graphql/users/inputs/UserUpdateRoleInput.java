@@ -1,6 +1,6 @@
 package com.gbdecastro.netflix.application.graphql.users.inputs;
 
-import jakarta.validation.constraints.Email;
+import com.gbdecastro.netflix.domain.users.ValidRole;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -10,12 +10,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserInput {
+public class UserUpdateRoleInput {
 
-    @NotNull(message = "{name_required}")
-    @NotEmpty(message = "{name_required}")
-    private String name;
-
-    @Email(message = "{email_invalid}")
-    private String email;
+    @NotNull(message = "{role_required}")
+    @NotEmpty(message = "{role_required}")
+    @ValidRole
+    private String role;
 }

@@ -15,20 +15,13 @@ spring:
   graphql:
     graphiql:
       enabled: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}
+          jwt-set-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}/protocol/openid-connect/certs
 server:
-  compression:
-    enabled: true
-    mime-types:
-      - text/html
-      - text/xml
-      - text/plain
-      - text/css
-      - text/javascript/
-      - application/javascript
-      - application/json
-      - image/svg+xml
-      - application/x-font-ttf
-    min-response-size: 2048
   port: 5100
 spring-doc:
   api-docs:
@@ -41,3 +34,6 @@ eureka:
     serviceUrl:
       defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761}
       # defaultZone: http://localhost:8761
+keycloak-client:
+  server-url: http://172.31.211.174:8080
+  realm: netflix

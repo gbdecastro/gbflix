@@ -4,16 +4,11 @@ import com.gbdecastro.netflix.application.graphql.users.inputs.UserInput;
 import com.gbdecastro.netflix.domain.shared.DomainException;
 import com.gbdecastro.netflix.domain.shared.annotation.BaseService;
 import com.gbdecastro.netflix.domain.shared.message.MessageContext;
-import com.gbdecastro.netflix.domain.shared.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.gbdecastro.netflix.domain.shared.utils.StringUtils.COMMA;
+import java.util.Set;
 
 @BaseService
 public class UserServiceImpl implements UserService {
@@ -38,7 +33,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Mono<UserEntity> create(UserInput input) {
-        return this.userRepository.save(mapper.toEntity(input));
+        UserEntity entity = mapper.toEntity(input);
+        entity.setRoles(Set.of(RolesEnum.USER));
+        return this.userRepository.save(entity);
     }
 
     @Override
@@ -46,7 +43,18 @@ public class UserServiceImpl implements UserService {
         return getById(id).flatMap(user -> {
             user = mapper.update(user, toUpdate);
             return userRepository.save(user);
-        }).switchIfEmpty(Mono.error(new DomainException(404, messageContext.getMessage("user_not_found"))));
+        }).switchIfEmpty(userNotFound());
+    }
+
+    public Mono<UserEntity> updateRole(String id, String role) {
+        return getById(id).flatMap(user -> {
+            user.setRoles(Set.of(RolesEnum.valueOf(role)));
+            return userRepository.save(user);
+        }).switchIfEmpty(userNotFound());
+    }
+
+    private Mono<UserEntity> userNotFound() {
+        return Mono.error(new DomainException(404, messageContext.getMessage("user_not_found")));
     }
 
 }
